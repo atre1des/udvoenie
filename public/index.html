@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f3ea">
+  <meta name="description" content="Удвоение — 30 дней, чтобы исследовать своё отношение к деньгам.">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icon.png">
+  <link rel="stylesheet" href="./style.css">
+  <script src="./app.js" type="module"></script>
+  <title>Удвоение</title>
+</head>
+<body>
+  <header class="top">
+    <div class="frame bar">
+      <button type="button" class="brand" data-view="game"><span aria-hidden="true">×2</span> Удвоение</button>
+      <nav aria-label="Разделы">
+        <button data-view="game">Игра</button>
+        <button data-view="journal">Дневник</button>
+        <button data-view="calculator">Калькулятор</button>
+      </nav>
+    </div>
+  </header>
+  <main class="frame" id="app"></main>
+  <footer class="frame"><span>Удвоение</span><span>Игра для самопознания. Не заменяет консультацию психолога.</span></footer>
+
+  <template id="game">
+    <div class="layout">
+      <aside>
+        <h2>Ваш прогресс</h2>
+        <p class="muted" id="progress-label"></p>
+        <progress id="progress" max="30"></progress>
+        <div class="days" id="days"></div>
+        <hr>
+        <label for="base">Стартовая валюта</label>
+        <select id="base"></select>
+        <label for="local">Ваша валюта</label>
+        <select id="local"></select>
+        <p class="muted small" id="rate-note">Для пересчёта используются примерные курсы из прототипа.</p>
+      </aside>
+      <div class="flow">
+        <section class="hero" aria-labelledby="amount">
+          <div class="coins" aria-hidden="true"><i></i><i></i><i></i><i>×2</i></div>
+          <p id="day-label"></p>
+          <h1 id="amount"></h1>
+          <p id="converted"></p>
+        </section>
+        <section class="panel" id="exercise"></section>
+      </div>
+    </div>
+  </template>
+  <template id="write">
+    <form id="spend-form">
+      <h2>На что вы потратите деньги?</h2>
+      <p class="muted">Представьте, что вам нужно потратить всю сумму сегодня. Опишите, на что, сколько и почему.</p>
+      <label for="spending">Ваши траты</label>
+      <textarea id="spending" rows="5" maxlength="8000" required placeholder="Например, 600 $ на поездку с семьёй и 400 $ на обучение…"></textarea>
+      <p class="muted small">Черновик сохраняется в этом браузере.</p>
+      <div class="actions">
+        <button class="primary" type="submit">Перейти к рефлексии</button>
+        <button type="button" id="help">Не знаю, что делать</button>
+      </div>
+      <div id="hints" hidden>
+        <h3>Начните с одного вопроса</h3>
+        <ul>
+          <li>Что вы давно откладываете, хотя могли бы позволить себе это сегодня?</li>
+          <li>Что бы вы выбрали, если бы никому не нужно было объяснять этот выбор?</li>
+          <li>Что изменилось бы, если бы часть денег можно было потратить на кого-то ещё?</li>
+        </ul>
+      </div>
+    </form>
+  </template>
+  <template id="reflect">
+    <h2>Рефлексия дня</h2>
+    <p id="saved-spending" class="quote"></p>
+    <p class="muted">Ответьте на любой вопрос или продолжите, когда будете готовы.</p>
+    <div id="questions"></div>
+    <div class="actions">
+      <button id="advance" class="primary" type="button"></button>
+      <button id="edit" type="button">Изменить траты</button>
+    </div>
+  </template>
+  <template id="journal">
+    <section class="panel standalone">
+      <h1>Дневник</h1>
+      <p class="muted" id="journal-intro">Здесь появятся траты и ответы за завершённые дни.</p>
+      <div id="checkpoints"></div>
+      <div id="entries"></div>
+      <div class="actions data-actions">
+        <button id="export">Скачать данные</button>
+        <button id="erase" class="danger">Удалить данные</button>
+      </div>
+    </section>
+  </template>
+  <template id="calculator">
+    <section class="panel standalone">
+      <h1>Калькулятор</h1>
+      <p class="muted">Посмотрите, как растёт сумма. Расчёт не меняет прогресс в игре.</p>
+      <form id="calc-form">
+        <div class="inputs">
+          <div><label for="seed">Стартовая сумма</label><input id="seed" type="number" min="0.01" max="1000000000" step="0.01" value="1000" required></div>
+          <div><label for="calc-day">День</label><input id="calc-day" type="number" min="1" max="30" value="1" required></div>
+          <div><label for="calc-currency">Валюта</label><select id="calc-currency"></select></div>
+        </div>
+        <button class="primary" type="submit">Рассчитать</button>
+        <output id="calc-result" aria-live="polite"></output>
+      </form>
+    </section>
+  </template>
+  <div id="notice" role="status" hidden></div>
+</body>
+</html>
